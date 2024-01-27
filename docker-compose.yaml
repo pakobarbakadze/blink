@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  blink-service:
+    build:
+      context: .
+      target: ${NODE_ENV}
+      dockerfile: Dockerfile
+    container_name: blink-chat
+    command: npm run start:debug:container
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - ${PORT}:${PORT}
+      - 9229:9229
+    volumes:
+      - /app/node_modules
+      - .:/app
+
+  blink-db:
+    image: postgres
+    container_name: CSM-postgres
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    restart: always
+
+volumes:
+  pgdata:
