@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, FindOptionsWhere, Repository } from 'typeorm';
-import { User } from './user/entities/user.entity';
+import { User } from './entities/user.entity';
 
 export class UserRepository {
   constructor(

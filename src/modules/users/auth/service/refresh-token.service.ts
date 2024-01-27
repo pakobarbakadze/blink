@@ -5,7 +5,7 @@ import { RefreshToken } from '../entities/refresh-token.entity';
 import { InsertRefreshToken } from '../types/refresh-token.type';
 
 @Injectable()
-export class RefreshTokenStorage {
+export class RefreshTokenService {
   constructor(
     @InjectRepository(RefreshToken)
     private readonly refreshTokenRepository: Repository<RefreshToken>,

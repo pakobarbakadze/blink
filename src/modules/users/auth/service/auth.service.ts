@@ -1,18 +1,18 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { UserRepository } from '../../user.repository';
 import { User } from '../../user/entities/user.entity';
+import { UserRepository } from '../../user/user.repository';
 import { SignUpUserInput } from '../dto/sign-up.input';
 import { TokensQl } from '../models/token.model';
 import { JwtPayload } from '../types/jwt-payload.type';
-import { RefreshTokenStorage } from './refresh-token-storage.service';
+import { RefreshTokenService } from './refresh-token.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly refreshTokenStorage: RefreshTokenStorage,
+    private readonly refreshTokenService: RefreshTokenService,
     private readonly configSercive: ConfigService,
     private readonly jwtService: JwtService,
   ) {}
@@ -26,7 +26,7 @@ export class AuthService {
 
     const [accessToken, refreshToken] = await this.signTokens(payload);
 
-    await this.refreshTokenStorage.insert({ user, token: refreshToken });
+    await this.refreshTokenService.insert({ user, token: refreshToken });
 
     return { access_token: accessToken, refresh_token: refreshToken };
   }
@@ -61,7 +61,7 @@ export class AuthService {
     const decoded = await this.jwtService.verifyAsync(refreshToken, {
       secret: this.configSercive.get<string>('REFRESH_JWT_SECRET'),
     });
-    await this.refreshTokenStorage.validate(decoded.sub);
+    await this.refreshTokenService.validate(decoded.sub);
     const payload = { sub: decoded.sub, username: decoded.username };
     const accessToken = await this.jwtService.signAsync(payload);
 
@@ -73,7 +73,7 @@ export class AuthService {
   ): Promise<{ message: string }> {
     const token = authorization.split(' ')[1];
     const decoded = await this.jwtService.verifyAsync(token);
-    await this.refreshTokenStorage.invalidate(decoded.sub);
+    await this.refreshTokenService.invalidate(decoded.sub);
 
     return { message: 'Token invalidated successfully' };
   }
