@@ -6,7 +6,7 @@ services:
       context: .
       target: ${NODE_ENV}
       dockerfile: Dockerfile
-    container_name: blink-chat
+    container_name: blink
     command: npm run start:debug:container
     depends_on:
       - blink-db
