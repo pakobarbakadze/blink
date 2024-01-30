@@ -1,9 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class UserQL {
+export class PostQL {
   @Field(() => Int, { description: 'Example field (placeholder)' })
-  id: number;
-
-  username: string;
+  exampleField: number;
 }
