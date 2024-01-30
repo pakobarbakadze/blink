@@ -14,10 +14,11 @@ export class RefreshTokenService {
   public async insert(
     insertRefreshTokenDto: InsertRefreshToken,
   ): Promise<void> {
-    const { user, token } = insertRefreshTokenDto;
+    const { user, deviceId, token } = insertRefreshTokenDto;
 
     const refreshToken = this.refreshTokenRepository.create({
       user,
+      deviceId,
       refreshToken: token,
     });
 

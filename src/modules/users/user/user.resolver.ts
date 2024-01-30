@@ -1,5 +1,7 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserQL } from '../../../common/models/user.model';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserService } from './user.service';
 
@@ -8,11 +10,13 @@ export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query(() => [UserQL], { name: 'users' })
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.userService.findAll();
   }
 
   @Query(() => UserQL, { name: 'user' })
+  @UseGuards(JwtAuthGuard)
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.userService.findOne(id);
   }

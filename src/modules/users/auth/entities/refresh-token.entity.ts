@@ -9,4 +9,7 @@ export class RefreshToken extends Model {
 
   @Column({ unique: true })
   refreshToken: string;
+
+  @Column({ unique: true })
+  deviceId: string;
 }

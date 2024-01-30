@@ -1,7 +1,8 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class PostQL {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  title: string;
+  content: string;
+  // author: User;
 }

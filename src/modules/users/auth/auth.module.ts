@@ -7,6 +7,7 @@ import { AuthResolver } from './auth.resolver';
 import { RefreshToken } from './entities/refresh-token.entity';
 import { AuthService } from './service/auth.service';
 import { RefreshTokenService } from './service/refresh-token.service';
+import { JwtRefreshStrategy } from './strategy/jwt-refresh.strategy';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { LocalStrategy } from './strategy/local.strategy';
 
@@ -26,6 +27,7 @@ import { LocalStrategy } from './strategy/local.strategy';
     RefreshTokenService,
     LocalStrategy,
     JwtStrategy,
+    JwtRefreshStrategy,
   ],
 })
 export class AuthModule {}
