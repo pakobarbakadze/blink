@@ -5,7 +5,7 @@ import { User } from '../../user/entities/user.entity';
 import { UserRepository } from '../../user/user.repository';
 import { SignUpUserInput } from '../dto/sign-up.input';
 import { TokensQl } from '../models/token.model';
-import { JwtPayload } from '../types/jwt-payload.type';
+import { JwtPayload } from '../types/type/jwt-payload.type';
 import { RefreshTokenService } from './refresh-token.service';
 
 @Injectable()
@@ -17,11 +17,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  public async signIn(signInUserInput: SignUpUserInput): Promise<TokensQl> {
-    const { username } = signInUserInput;
-
-    const user = await this.userRepository.findOne({ where: { username } });
-
+  public async signIn(user: User): Promise<TokensQl> {
     const payload: JwtPayload = { sub: user.id, username: user.username };
 
     const [accessToken, refreshToken] = await this.signTokens(payload);

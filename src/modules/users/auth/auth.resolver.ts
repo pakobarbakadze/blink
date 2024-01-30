@@ -1,7 +1,9 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 import { UserQL } from 'src/common/models/user.model';
 import { SignInUserInput } from './dto/sign-in.input';
 import { SignUpUserInput } from './dto/sign-up.input';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 import { TokensQl } from './models/token.model';
 import { AuthService } from './service/auth.service';
 
@@ -15,7 +17,11 @@ export class AuthResolver {
   }
 
   @Mutation(() => TokensQl)
-  signIn(@Args('signInUserInput') signInUserInput: SignInUserInput) {
-    return this.authService.signIn(signInUserInput);
+  @UseGuards(LocalAuthGuard)
+  signIn(
+    @Args('signInUserInput') signInUserInput: SignInUserInput,
+    @Context() context: any,
+  ) {
+    return this.authService.signIn(context.user);
   }
 }

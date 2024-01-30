@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { Model } from 'src/common/entities/model.entity';
-import { BeforeInsert, Column, Entity } from 'typeorm';
+import { Post } from 'src/modules/posts/entities/post.entity';
+import { BeforeInsert, Column, Entity, OneToMany } from 'typeorm';
 
 @Entity('users')
 export class User extends Model {
@@ -9,6 +10,9 @@ export class User extends Model {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Post, (post) => post.author)
+  posts: Post[];
 
   async validatePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);

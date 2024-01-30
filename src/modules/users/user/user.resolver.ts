@@ -7,7 +7,7 @@ import { UserService } from './user.service';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Query(() => [UserQL], { name: 'user' })
+  @Query(() => [UserQL], { name: 'users' })
   findAll() {
     return this.userService.findAll();
   }
