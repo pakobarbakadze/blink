@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { GetResourceArgs } from 'src/common/dto/get-resource.args';
+import { FindManyOptions, ILike } from 'typeorm';
 import { User } from '../users/user/entities/user.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
@@ -21,8 +23,23 @@ export class PostsService {
     return this.postsRepository.save(post);
   }
 
-  public findAll() {
-    return this.postsRepository.find();
+  public findAll(args: GetResourceArgs) {
+    const { search, sort } = args;
+    const findOptions: FindManyOptions<Post> = {};
+
+    if (search) {
+      findOptions.where = {
+        title: ILike(`%${search}%`),
+      };
+    }
+
+    if (sort) {
+      findOptions.order = {
+        created_at: sort === 'asc' ? 'ASC' : 'DESC',
+      };
+    }
+
+    return this.postsRepository.find(findOptions);
   }
 
   public findOne(id: number) {

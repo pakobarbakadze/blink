@@ -9,6 +9,9 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
     const ctx = GqlExecutionContext.create(context).getContext();
     const request = ctx.req;
 
+    const token = request.headers.authorization;
+    request.access_token = token;
+
     return request;
   }
 }

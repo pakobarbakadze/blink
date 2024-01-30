@@ -15,7 +15,7 @@ export class JwtRefreshTokenGuard extends AuthGuard(
     const ctx = GqlExecutionContext.create(context).getContext();
     const request = ctx.req;
 
-    const token = request.headers.authorization; // assuming the token is sent in the Authorization header
+    const token = request.headers.authorization;
     request.refresh_token = token;
 
     return request;

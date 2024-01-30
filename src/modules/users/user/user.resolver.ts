@@ -22,11 +22,13 @@ export class UserResolver {
   }
 
   @Mutation(() => UserQL)
+  @UseGuards(JwtAuthGuard)
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.update(updateUserInput.id, updateUserInput);
   }
 
   @Mutation(() => UserQL)
+  @UseGuards(JwtAuthGuard)
   removeUser(@Args('id', { type: () => Int }) id: number) {
     return this.userService.remove(id);
   }

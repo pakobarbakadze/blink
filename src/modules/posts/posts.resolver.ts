@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { GetResourceArgs } from 'src/common/dto/get-resource.args';
 import { CurrentUser } from '../users/auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../users/auth/guards/jwt-auth.guard';
 import { User } from '../users/user/entities/user.entity';
@@ -22,8 +23,8 @@ export class PostsResolver {
   }
 
   @Query(() => [PostQL], { name: 'posts' })
-  findAll() {
-    return this.postsService.findAll();
+  findAll(@Args() args: GetResourceArgs) {
+    return this.postsService.findAll(args);
   }
 
   @Query(() => PostQL, { name: 'post' })
@@ -32,11 +33,13 @@ export class PostsResolver {
   }
 
   @Mutation(() => PostQL)
+  @UseGuards(JwtAuthGuard)
   updatePost(@Args('updatePostInput') updatePostInput: UpdatePostInput) {
     return this.postsService.update(updatePostInput.id, updatePostInput);
   }
 
   @Mutation(() => PostQL)
+  @UseGuards(JwtAuthGuard)
   removePost(@Args('id', { type: () => Int }) id: number) {
     return this.postsService.remove(id);
   }
