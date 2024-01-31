@@ -1,20 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ResourceArgs } from 'src/common/dto/resource.args';
-import { PaginationService } from 'src/common/services/pagination.service';
 import { FindManyOptions, ILike } from 'typeorm';
 import { User } from '../users/user/entities/user.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { Post } from './entities/post.entity';
-import { PaginatedPostQL } from './models/post.model';
 import { PostsRepository } from './posts.repository';
 
 @Injectable()
 export class PostsService {
-  constructor(
-    private readonly postsRepository: PostsRepository,
-    private readonly paginationService: PaginationService<Post[]>,
-  ) {}
+  constructor(private readonly postsRepository: PostsRepository) {}
 
   public create(createPostInput: CreatePostInput, author: User): Promise<Post> {
     const { title, content } = createPostInput;
@@ -28,7 +23,7 @@ export class PostsService {
     return this.postsRepository.save(post);
   }
 
-  public async findAll(args: ResourceArgs): Promise<PaginatedPostQL> {
+  public findAll(args: ResourceArgs): Promise<Post[]> {
     const { search, sort, page, perPage } = args;
 
     const findOptions: FindManyOptions<Post> = {
@@ -40,10 +35,7 @@ export class PostsService {
       take: perPage,
     };
 
-    const [posts, totalCount] =
-      await this.postsRepository.findAndCount(findOptions);
-
-    return this.paginationService.paginate(posts, totalCount, page, perPage);
+    return this.postsRepository.find(findOptions);
   }
 
   public findOne(id: number): Promise<Post> {

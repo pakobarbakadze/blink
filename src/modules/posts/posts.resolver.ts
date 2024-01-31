@@ -6,7 +6,7 @@ import { JwtAuthGuard } from '../users/auth/guards/jwt-auth.guard';
 import { User } from '../users/user/entities/user.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
-import { PaginatedPostQL, PostQL } from './models/post.model';
+import { PostQL } from './models/post.model';
 import { PostsService } from './posts.service';
 
 @Resolver(() => PostQL)
@@ -22,8 +22,8 @@ export class PostsResolver {
     return this.postsService.create(createPostInput, user);
   }
 
-  @Query(() => PaginatedPostQL, { name: 'posts' })
-  findAll(@Args() args: ResourceArgs): Promise<PaginatedPostQL> {
+  @Query(() => PostQL, { name: 'posts' })
+  findAll(@Args() args: ResourceArgs): Promise<PostQL[]> {
     return this.postsService.findAll(args);
   }
 
