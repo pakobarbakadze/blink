@@ -1,12 +1,7 @@
 import { Type } from '@nestjs/common';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { PageInfoQL } from 'src/common/models/page-info.model';
-
-interface PageInfo {
-  currentPage: number;
-  totalPages: number;
-  hasNextPage: boolean;
-}
+import { PageInfo } from './page-info.interface';
 
 export interface Paginated<T> {
   data: T[];
