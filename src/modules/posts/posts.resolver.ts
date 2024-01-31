@@ -1,6 +1,5 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { ResourceArgs } from 'src/common/dto/resource.args';
 import { CurrentUser } from '../users/auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../users/auth/guards/jwt-auth.guard';
 import { User } from '../users/user/entities/user.entity';
@@ -20,11 +19,6 @@ export class PostsResolver {
     @CurrentUser() user: User,
   ): Promise<PostQL> {
     return this.postsService.create(createPostInput, user);
-  }
-
-  @Query(() => PostQL, { name: 'posts' })
-  findAll(@Args() args: ResourceArgs): Promise<PostQL[]> {
-    return this.postsService.findAll(args);
   }
 
   @Query(() => PostQL, { name: 'post' })

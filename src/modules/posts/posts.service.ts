@@ -23,7 +23,9 @@ export class PostsService {
     return this.postsRepository.save(post);
   }
 
-  public findAll(args: ResourceArgs): Promise<Post[]> {
+  public findAndCount(
+    args: ResourceArgs,
+  ): Promise<[Post[], totalCount: number]> {
     const { search, sort, page, perPage } = args;
 
     const findOptions: FindManyOptions<Post> = {
@@ -35,7 +37,7 @@ export class PostsService {
       take: perPage,
     };
 
-    return this.postsRepository.find(findOptions);
+    return this.postsRepository.findAndCount(findOptions);
   }
 
   public findOne(id: number): Promise<Post> {

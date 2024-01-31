@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PageInfoService } from 'src/common/services/page-info.service';
 import { Post } from './entities/post.entity';
 import { PaginatedPostsResolver } from './paginated-posts.resolver';
 import { PostsRepository } from './posts.repository';
@@ -12,6 +13,7 @@ import { PostsService } from './posts.service';
     PostsResolver,
     PaginatedPostsResolver,
     PostsService,
+    PageInfoService,
     PostsRepository,
   ],
 })
