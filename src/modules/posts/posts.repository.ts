@@ -4,6 +4,7 @@ import {
   FindManyOptions,
   FindOneOptions,
   Repository,
+  UpdateResult,
 } from 'typeorm';
 import { UpdatePostInput } from './dto/update-post.input';
 import { Post } from './entities/post.entity';
@@ -29,7 +30,10 @@ export class PostsRepository {
     return this.postsRepository.find(conditions);
   }
 
-  public update(id: number, updatePostInput: UpdatePostInput) {
+  public update(
+    id: number,
+    updatePostInput: UpdatePostInput,
+  ): Promise<UpdateResult> {
     return this.postsRepository.update(id, updatePostInput);
   }
 

@@ -1,4 +1,5 @@
 import { ObjectType } from '@nestjs/graphql';
+import { Paginated } from 'src/common/types/interface/paginate.interface';
 
 @ObjectType()
 export class PostQL {
@@ -6,3 +7,6 @@ export class PostQL {
   content: string;
   // author: User;
 }
+
+@ObjectType()
+export class PaginatedPostQL extends Paginated(PostQL) {}

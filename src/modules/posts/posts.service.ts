@@ -5,6 +5,7 @@ import { User } from '../users/user/entities/user.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { Post } from './entities/post.entity';
+import { PaginatedPostQL } from './models/post.model';
 import { PostsRepository } from './posts.repository';
 
 @Injectable()
@@ -23,8 +24,11 @@ export class PostsService {
     return this.postsRepository.save(post);
   }
 
-  public findAll(args: GetResourceArgs) {
-    const { search, sort } = args;
+  // TODO: return type should be entity
+  // pagination should be handled in separate service
+  public async findAll(args: GetResourceArgs): Promise<PaginatedPostQL> {
+    const { search, sort, page, perPage } = args;
+
     const findOptions: FindManyOptions<Post> = {};
 
     if (search) {
@@ -39,10 +43,20 @@ export class PostsService {
       };
     }
 
-    return this.postsRepository.find(findOptions);
+    findOptions.skip = (page - 1) * perPage;
+    findOptions.take = perPage;
+
+    const posts = await this.postsRepository.find(findOptions);
+
+    return {
+      edges: posts.map((post) => ({ cursor: post.id.toString(), node: post })),
+      nodes: posts,
+      totalCount: posts.length,
+      hasNextPage: true,
+    };
   }
 
-  public findOne(id: number) {
+  public findOne(id: number): Promise<Post> {
     return this.postsRepository.findOne({ where: { id } });
   }
 
