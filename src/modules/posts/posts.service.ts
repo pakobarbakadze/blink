@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { GetResourceArgs } from 'src/common/dto/get-resource.args';
+import { ResourceArgs } from 'src/common/dto/resource.args';
+import { PaginationService } from 'src/common/services/pagination.service';
 import { FindManyOptions, ILike } from 'typeorm';
 import { User } from '../users/user/entities/user.entity';
 import { CreatePostInput } from './dto/create-post.input';
@@ -10,7 +11,10 @@ import { PostsRepository } from './posts.repository';
 
 @Injectable()
 export class PostsService {
-  constructor(private readonly postsRepository: PostsRepository) {}
+  constructor(
+    private readonly postsRepository: PostsRepository,
+    private readonly paginationService: PaginationService<Post[]>,
+  ) {}
 
   public create(createPostInput: CreatePostInput, author: User): Promise<Post> {
     const { title, content } = createPostInput;
@@ -24,36 +28,22 @@ export class PostsService {
     return this.postsRepository.save(post);
   }
 
-  // TODO: return type should be entity
-  // pagination should be handled in separate service
-  public async findAll(args: GetResourceArgs): Promise<PaginatedPostQL> {
+  public async findAll(args: ResourceArgs): Promise<PaginatedPostQL> {
     const { search, sort, page, perPage } = args;
 
-    const findOptions: FindManyOptions<Post> = {};
-
-    if (search) {
-      findOptions.where = {
-        title: ILike(`%${search}%`),
-      };
-    }
-
-    if (sort) {
-      findOptions.order = {
-        created_at: sort === 'asc' ? 'ASC' : 'DESC',
-      };
-    }
-
-    findOptions.skip = (page - 1) * perPage;
-    findOptions.take = perPage;
-
-    const posts = await this.postsRepository.find(findOptions);
-
-    return {
-      edges: posts.map((post) => ({ cursor: post.id.toString(), node: post })),
-      nodes: posts,
-      totalCount: posts.length,
-      hasNextPage: true,
+    const findOptions: FindManyOptions<Post> = {
+      where: search ? { title: ILike(`%${search}%`) } : undefined,
+      order: sort
+        ? { created_at: sort.toUpperCase() as 'ASC' | 'DESC' }
+        : undefined,
+      skip: (page - 1) * perPage,
+      take: perPage,
     };
+
+    const [posts, totalCount] =
+      await this.postsRepository.findAndCount(findOptions);
+
+    return this.paginationService.paginate(posts, totalCount, page, perPage);
   }
 
   public findOne(id: number): Promise<Post> {

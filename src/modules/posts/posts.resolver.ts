@@ -1,6 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GetResourceArgs } from 'src/common/dto/get-resource.args';
+import { ResourceArgs } from 'src/common/dto/resource.args';
 import { CurrentUser } from '../users/auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../users/auth/guards/jwt-auth.guard';
 import { User } from '../users/user/entities/user.entity';
@@ -23,7 +23,7 @@ export class PostsResolver {
   }
 
   @Query(() => PaginatedPostQL, { name: 'posts' })
-  findAll(@Args() args: GetResourceArgs): Promise<PaginatedPostQL> {
+  findAll(@Args() args: ResourceArgs): Promise<PaginatedPostQL> {
     return this.postsService.findAll(args);
   }
 

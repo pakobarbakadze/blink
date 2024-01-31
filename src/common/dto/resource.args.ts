@@ -6,7 +6,7 @@ registerEnumType(SORT, {
 });
 
 @ArgsType()
-export class GetResourceArgs {
+export class ResourceArgs {
   sort?: SORT;
   search?: string;
 

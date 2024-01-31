@@ -30,6 +30,12 @@ export class PostsRepository {
     return this.postsRepository.find(conditions);
   }
 
+  public findAndCount(
+    conditions?: FindManyOptions<Post>,
+  ): Promise<[Post[], count: number]> {
+    return this.postsRepository.findAndCount(conditions);
+  }
+
   public update(
     id: number,
     updatePostInput: UpdatePostInput,
