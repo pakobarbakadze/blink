@@ -14,12 +14,12 @@ export class PostsRepository {
     @InjectRepository(Post) private readonly postsRepository: Repository<Post>,
   ) {}
 
-  public create(company: Partial<Post>): Post {
-    return this.postsRepository.create(company);
+  public create(post: Partial<Post>): Post {
+    return this.postsRepository.create(post);
   }
 
-  public save(company: Post): Promise<Post> {
-    return this.postsRepository.save(company);
+  public save(post: Post): Promise<Post> {
+    return this.postsRepository.save(post);
   }
 
   public findOne(conditions: FindOneOptions<Post>): Promise<Post> {

@@ -1,6 +1,7 @@
 import { Module, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Message } from 'src/modules/chat/entities/message.entity';
 import { RefreshToken } from 'src/modules/users/auth/entities/refresh-token.entity';
 import { User } from 'src/modules/users/user/entities/user.entity';
 
@@ -14,7 +15,7 @@ import { User } from 'src/modules/users/user/entities/user.entity';
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [User, Post, RefreshToken],
+        entities: [User, Post, Message, RefreshToken],
         synchronize: true,
         autoLoadEntities: true,
       }),

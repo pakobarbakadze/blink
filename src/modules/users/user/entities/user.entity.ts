@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { Model } from 'src/common/entities/model.entity';
+import { Message } from 'src/modules/chat/entities/message.entity';
 import { Post } from 'src/modules/posts/entities/post.entity';
 import { BeforeInsert, Column, Entity, OneToMany } from 'typeorm';
 
@@ -13,6 +14,9 @@ export class User extends Model {
 
   @OneToMany(() => Post, (post) => post.author)
   posts: Post[];
+
+  @OneToMany(() => Message, (message) => message.sender)
+  messages: Message[];
 
   async validatePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
