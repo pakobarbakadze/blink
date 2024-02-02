@@ -6,21 +6,21 @@ import { JwtAuthGuard } from '../users/auth/guards/jwt-auth.guard';
 import { User } from '../users/user/entities/user.entity';
 import { ChatService } from './chat.service';
 import { MessageInput } from './dto/message.input';
-import { MessageQL } from './models/message.model';
+import { MessageType } from './models/message.model';
 
-@Resolver(() => MessageQL)
+@Resolver(() => MessageType)
 export class ChatResolver {
   private readonly pubSub: PubSub;
   constructor(private readonly chatService: ChatService) {
     this.pubSub = new PubSub();
   }
 
-  @Query(() => [MessageQL], { name: 'messages' })
+  @Query(() => [MessageType], { name: 'messages' })
   findAll() {
     return this.chatService.findAll();
   }
 
-  @Mutation(() => MessageQL)
+  @Mutation(() => MessageType)
   @UseGuards(JwtAuthGuard)
   async sendMessage(
     @Args('message') message: MessageInput,
@@ -31,7 +31,7 @@ export class ChatResolver {
     return newMessage;
   }
 
-  @Subscription(() => MessageQL, { name: 'messageSent' })
+  @Subscription(() => MessageType, { name: 'messageSent' })
   messageSent() {
     return this.pubSub.asyncIterator('messageSent');
   }

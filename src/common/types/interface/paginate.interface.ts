@@ -1,6 +1,6 @@
 import { Type } from '@nestjs/common';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { PageInfoQL } from 'src/common/models/page-info.model';
+import { PageInfoType } from 'src/common/models/page-info.model';
 import { PageInfo } from './page-info.interface';
 
 export interface Paginated<T> {
@@ -14,8 +14,8 @@ export function Paginated<T>(classRef: Type<T>): Type<Paginated<T>> {
     @Field((type) => [classRef], { nullable: true })
     data: T[];
 
-    @Field((type) => PageInfoQL, { nullable: true })
-    pageInfo: PageInfoQL;
+    @Field((type) => PageInfoType, { nullable: true })
+    pageInfo: PageInfoType;
   }
 
   return PaginatedType as Type<Paginated<T>>;

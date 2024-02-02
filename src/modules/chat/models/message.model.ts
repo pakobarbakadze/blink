@@ -1,7 +1,7 @@
 import { ObjectType } from '@nestjs/graphql';
-import { ModelQL } from 'src/common/models/model.model';
+import { ModelType } from 'src/common/models/model.model';
 
 @ObjectType()
-export class MessageQL extends ModelQL {
+export class MessageType extends ModelType {
   content: string;
 }

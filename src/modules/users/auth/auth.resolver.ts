@@ -1,6 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UserQL } from 'src/common/models/user.model';
+import { UserType } from 'src/common/models/user.model';
 import { LogoutOutput } from './dto/log-out.output';
 import { RefreshTokenOutput } from './dto/refresh-token.output';
 import { SignInUserInput } from './dto/sign-in.input';
@@ -11,11 +11,11 @@ import { JwtRefreshTokenGuard } from './guards/jwt-refresh.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthService } from './service/auth.service';
 
-@Resolver(() => UserQL)
+@Resolver(() => UserType)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Mutation(() => UserQL)
+  @Mutation(() => UserType)
   signUp(@Args('signUpUserInput') signUpUserInput: SignUpUserInput) {
     return this.authService.signUp(signUpUserInput);
   }

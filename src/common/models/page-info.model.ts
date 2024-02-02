@@ -2,7 +2,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { PageInfo } from '../types/interface/page-info.interface';
 
 @ObjectType()
-export class PageInfoQL implements PageInfo {
+export class PageInfoType implements PageInfo {
   @Field((type) => Int)
   currentPage: number;
 
