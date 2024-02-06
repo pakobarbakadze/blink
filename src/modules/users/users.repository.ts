@@ -3,10 +3,10 @@ import { GenericRepository } from 'src/common/generic.repository';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 
-export class UserRepository extends GenericRepository<User> {
+export class UsersRepository extends GenericRepository<User> {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {
-    super(userRepository);
+    super(usersRepository);
   }
 }

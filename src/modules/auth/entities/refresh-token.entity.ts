@@ -1,6 +1,6 @@
 import { Model } from 'src/common/entities/model.entity';
+import { User } from 'src/modules/users/entities/user.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
-import { User } from '../../user/entities/user.entity';
 
 @Entity('refresh-tokens')
 export class RefreshToken extends Model {

@@ -1,21 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateUserInput } from './dto/update-user.input';
-import { UserRepository } from './user.repository';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
-export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+export class UsersService {
+  constructor(private readonly usersRepository: UsersRepository) {}
 
   public findAll() {
-    return this.userRepository.findAll();
+    return this.usersRepository.findAll();
   }
 
   public findOne(id: number) {
-    return this.userRepository.findOne({ where: { id } });
+    return this.usersRepository.findOne({ where: { id } });
   }
 
   public findWithPost(postId: number) {
-    return this.userRepository.findOne({ where: { posts: { id: postId } } });
+    return this.usersRepository.findOne({ where: { posts: { id: postId } } });
   }
 
   public update(id: number, updateUserInput: UpdateUserInput) {

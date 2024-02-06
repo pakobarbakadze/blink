@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ResourceArgs } from 'src/common/dto/resource.args';
 import { FindManyOptions, ILike } from 'typeorm';
-import { User } from '../users/user/entities/user.entity';
+import { User } from '../users/entities/user.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { Post } from './entities/post.entity';

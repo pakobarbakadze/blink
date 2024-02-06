@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from '../user/user.module';
+import { UsersModule } from '../users/users.module';
 import { AuthResolver } from './auth.resolver';
 import { RefreshToken } from './entities/refresh-token.entity';
 import { AuthService } from './service/auth.service';
@@ -13,7 +13,7 @@ import { LocalStrategy } from './strategy/local.strategy';
 
 @Module({
   imports: [
-    UserModule,
+    UsersModule,
     TypeOrmModule.forFeature([RefreshToken]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({

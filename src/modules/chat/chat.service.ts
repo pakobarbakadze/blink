@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../users/user/entities/user.entity';
+import { User } from '../users/entities/user.entity';
 import { MessageInput } from './dto/message.input';
 import { Message } from './entities/message.entity';
 import { MessageRepository } from './message.repository';

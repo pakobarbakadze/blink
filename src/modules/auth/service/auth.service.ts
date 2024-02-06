@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../../user/entities/user.entity';
-import { UserRepository } from '../../user/user.repository';
+import { User } from 'src/modules/users/entities/user.entity';
+import { UsersRepository } from 'src/modules/users/users.repository';
 import { RefreshTokenOutput } from '../dto/refresh-token.output';
 import { SignUpUserInput } from '../dto/sign-up.input';
 import { JwtPayload } from '../types/type/jwt-payload.type';
@@ -11,7 +11,7 @@ import { RefreshTokenService } from './refresh-token.service';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userRepository: UserRepository,
+    private readonly usersRepository: UsersRepository,
     private readonly refreshTokenService: RefreshTokenService,
     private readonly configSercive: ConfigService,
     private readonly jwtService: JwtService,
@@ -37,16 +37,16 @@ export class AuthService {
   public async signUp(signUpUserInput: SignUpUserInput): Promise<User> {
     const { username, password } = signUpUserInput;
 
-    const createdUser = this.userRepository.create({
+    const createdUser = this.usersRepository.create({
       username,
       password,
     });
 
-    return this.userRepository.save(createdUser);
+    return this.usersRepository.save(createdUser);
   }
 
   public async validateUser(username: string, password: string) {
-    const user = await this.userRepository.findOne({ where: { username } });
+    const user = await this.usersRepository.findOne({ where: { username } });
 
     if (!user) throw new UnauthorizedException('Invalid username or password');
 

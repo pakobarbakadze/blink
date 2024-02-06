@@ -1,9 +1,9 @@
 import { Module, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RefreshToken } from 'src/modules/auth/entities/refresh-token.entity';
 import { Message } from 'src/modules/chat/entities/message.entity';
-import { RefreshToken } from 'src/modules/users/auth/entities/refresh-token.entity';
-import { User } from 'src/modules/users/user/entities/user.entity';
+import { User } from 'src/modules/users/entities/user.entity';
 
 @Module({
   imports: [

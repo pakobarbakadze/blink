@@ -1,9 +1,9 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
-import { CurrentUser } from '../users/auth/decorators/current-user.decorator';
-import { JwtAuthGuard } from '../users/auth/guards/jwt-auth.guard';
-import { User } from '../users/user/entities/user.entity';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { User } from '../users/entities/user.entity';
 import { ChatService } from './chat.service';
 import { MessageInput } from './dto/message.input';
 import { MessageType } from './models/message.model';
