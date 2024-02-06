@@ -14,6 +14,10 @@ export class UserService {
     return this.userRepository.findOne({ where: { id } });
   }
 
+  public findWithPost(postId: number) {
+    return this.userRepository.findOne({ where: { posts: { id: postId } } });
+  }
+
   public update(id: number, updateUserInput: UpdateUserInput) {
     return `This action updates a #${id} user`;
   }

@@ -1,5 +1,15 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { UserType } from 'src/common/models/user.model';
+import { UserService } from 'src/modules/users/user/user.service';
 import { CurrentUser } from '../../users/auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../../users/auth/guards/jwt-auth.guard';
 import { User } from '../../users/user/entities/user.entity';
@@ -10,7 +20,10 @@ import { PostsService } from '../posts.service';
 
 @Resolver(() => PostType)
 export class PostsResolver {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(
+    private readonly postsService: PostsService,
+    private readonly userService: UserService,
+  ) {}
 
   @Mutation(() => PostType)
   @UseGuards(JwtAuthGuard)
@@ -36,5 +49,11 @@ export class PostsResolver {
   @UseGuards(JwtAuthGuard)
   removePost(@Args('id', { type: () => Int }) id: number) {
     return this.postsService.remove(id);
+  }
+
+  @ResolveField('author', () => UserType)
+  async getAuthor(@Parent() post: PostType) {
+    const { id } = post;
+    return this.userService.findWithPost(id);
   }
 }
